@@ -3,10 +3,10 @@
 > Projet : Python, Shell, Mariadb, Mail
 
 ## SOMMAIRE
-1. [FTP](##serveur-ftp)
-2. [MariaDB](##server-mariadb)
-3. [Web](##server-web)
-4. [SSH](##ssh)
+1. [FTP](#serveur-ftp)
+2. [MariaDB](#server-mariadb)
+3. [Web](#server-web)
+4. [SSH](#ssh)
 
 
 > Toute la suite de ce tutoriel sera fait en ``su -``
