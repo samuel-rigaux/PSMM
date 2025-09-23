@@ -8,6 +8,7 @@
 3. [Web](#server-web)
 4. [SSH](#ssh)
 5. [Python](#python)
+6. [Mail](#mail)
 
 
 > Toute la suite de ce tutoriel sera fait en ``su -``
@@ -218,6 +219,90 @@ s.quit()
     pip3 --version
     mariadb --version  # Pour MariaDB ou MySQL client
     ftp --version
+
+
+## Mail
+
+> Ce document explique comment utiliser un script Python d’envoi de mail
+> avec détection automatique du serveur SMTP selon l’adresse email,
+> incluant une configuration spéciale pour le domaine `laplateforme.io`.
+> Ce dernier utilise le serveur SMTP de Google et nécessite un mot de
+> passe d'application Google.
+
+---
+
+### Script Python résumé
+
+    import smtplib  
+    from email.mime.text import MIMEText  
+    from getpass import getpass
+    
+    def get_smtp_server_and_port(email):  
+    domain = email.split('@')[-1].lower()  
+    if domain == 'gmail.com':  
+    return 'smtp.gmail.com', 587  
+    elif domain == 'yahoo.com':  
+    return 'smtp.mail.yahoo.com', 587  
+    elif domain in ['outlook.com', 'hotmail.com']:  
+    return 'smtp.office365.com', 587  
+    elif domain == 'laplateforme.io':  
+    # Utilise Google SMTP pour laplateforme.io  
+    return 'smtp.gmail.com', 587  
+    else:  
+    return 'smtp.' + domain, 587
+    
+    username = input("Identifiant (adresse mail) : ")  
+    password = getpass("Mot de passe (ou mot de passe d'application Google) : ")  
+    smtp_server, smtp_port = get_smtp_server_and_port(username)
+    
+    destinataire = input("Destinataire : ")  
+    sujet = input("Sujet : ")  
+    corps = input("Corps du mail : ")
+    
+    msg = MIMEText(corps)  
+    msg['Subject'] = sujet  
+    msg['From'] = username  
+    msg['To'] = destinataire
+    
+    with smtplib.SMTP(smtp_server, smtp_port) as server:  
+    server.starttls()  
+    server.login(username, password)  
+    server.sendmail(username, [destinataire], msg.as_string())
+    
+    print("Mail envoyé avec succès !")
+
+
+
+### Points importants
+
+- **Pour le domaine `laplateforme.io`**, le script utilise automatiquement le serveur SMTP Google (`smtp.gmail.com` port 587).
+- Gmail **bloque les connexions SMTP classiques avec mot de passe standard** pour des raisons de sécurité.
+- Pour contourner cela, il est **obligatoire de créer un mot de passe d'application** dans ton compte Google.
+- Ce mot de passe d’application est différent du mot de passe principal de ton compte Gmail et permet une authentification sécurisée par SMTP.
+- Pour créer un mot de passe d’application Google, rendez-vous sur : https://myaccount.google.com/security > Section "Mots de passe d’application".
+
+
+
+## Exécution du script
+
+1. Copier le script dans un fichier `send_mail.py`.
+2. Lancer dans un terminal avec :
+
+```
+python3 mail.py
+```
+
+3. Saisir les informations demandées (adresse mail, **mot de passe d’application**, destinataire, sujet, message).
+4. Le mail sera envoyé avec succès si l’authentification est correcte.
+
+
+
+### Conseils
+
+- Pour les autres domaines (Yahoo, Outlook, etc.), le script détecte automatiquement le serveur SMTP.
+- Pour des domaines non listés, il essaie de préfixer le domaine de l’email par "smtp." par défaut.
+- Adapte le script si besoin pour ajouter d’autres domaines spécifiques.
+
 
 
 
