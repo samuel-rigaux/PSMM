@@ -156,6 +156,10 @@ Mettre les bonnes permissions :
 
 _Important pour le fonctionnement du SSH par clé._
 
+Ta clé publique Windows est maintenant acceptée et tu peux te connecter avec :
+
+    ssh monitor@<IP_DE_TA_VM>
+
 
 ## Python
 
@@ -220,8 +224,6 @@ s.quit()
 
 
 
-Ta clé publique Windows est maintenant acceptée et tu peux te connecter avec :
 
-    ssh monitor@<IP_DE_TA_VM>
 
 
