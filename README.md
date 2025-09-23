@@ -7,6 +7,7 @@
 2. [MariaDB](#server-mariadb)
 3. [Web](#server-web)
 4. [SSH](#ssh)
+5. [Python](#python)
 
 
 > Toute la suite de ce tutoriel sera fait en ``su -``
@@ -154,6 +155,69 @@ Mettre les bonnes permissions :
     chmod 700 /home/monitor/.ssh
 
 _Important pour le fonctionnement du SSH par clé._
+
+
+## Python
+
+> Création d'une VM sans interface graphique avec python les outils
+> client pour s'envoyer des mails.
+
+### 1. Mise à jour du système
+
+    apt update && sudo apt upgrade -y
+
+### 2. Installation de Python 3
+
+    apt install python3 python3-pip -y
+
+-   Vérifie l’installation :
+
+```
+python3 --version
+pip3 --version
+```
+
+### 3. Installation du client MariaDB
+
+    apt  install mariadb-client -y
+
+### 4. Installation du client FTP
+
+    sudo  apt  install  ftp -y
+
+### 5. Envoi de mail en Python 
+
+-   La bibliothèque standard Python ("smtplib") suffit pour envoyer des mails.
+
+-   Exemple simple :
+
+```
+import smtplib
+from email.mime.text import MIMEText
+
+msg = MIMEText("Contenu du mail")
+msg['Subject'] = "Sujet"
+msg['From'] = "ton_email@domaine.fr"
+msg['To'] = "destinataire@domaine.fr"
+
+s = smtplib.SMTP('adresse_smtp')
+s.login("user", "motdepasse")  # Optionnel selon SMTP utilisé
+s.sendmail(msg['From'], [msg['To']], msg.as_string())
+s.quit()
+```
+
+> _Adaptation nécessaire selon le serveur SMTP utilisé (Gmail, OVH, etc.)._
+
+### 6. Vérification des installations
+
+    python3 --version
+    pip3 --version
+    mariadb --version  # Pour MariaDB ou MySQL client
+    ftp --version
+
+
+
+
 
 
 Ta clé publique Windows est maintenant acceptée et tu peux te connecter avec :
