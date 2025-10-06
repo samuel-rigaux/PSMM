@@ -304,6 +304,46 @@ python3 mail.py
 - Adapte le script si besoin pour ajouter d’autres domaines spécifiques.
 
 
+## Job 3
+
+```
+import paramiko
+
+hostname = "192.168.42.129"
+port = 22
+username = "monitor"
+key_path = "/home/monitor/.ssh/id_rsa"  # Mettre ici le chemin complet vers ta clé privée sécurisée
+
+# Commande à exécuter sur la machine distante
+command = "ls"
+
+try:
+    # Charger la clé privée
+    key = paramiko.RSAKey.from_private_key_file(key_path)
+    
+    # Initialiser la connexion SSH
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
+    # Connexion avec la clé privée (sans mot de passe)
+    client.connect(hostname=hostname, port=port, username=username, pkey=key)
+    
+    # Exécution de la commande
+    stdin, stdout, stderr = client.exec_command(command)
+    
+    # Affichage du résultat et erreurs s'il y en a
+    output = stdout.read().decode()
+    errors = stderr.read().decode()
+    
+    print(f"Output de '{command}':\n{output}")
+    if errors:
+        print(f"Erreurs :\n{errors}")
+    
+    client.close()
+except Exception as e:
+    print(f"Erreur lors de la connexion ou de l'exécution : {e}")
+```
+
 
 
 
