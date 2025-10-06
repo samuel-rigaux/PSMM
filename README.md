@@ -8,7 +8,7 @@
 3. [Web](#server-web)
 4. [SSH](#ssh)
 5. [Python](#python)
-6. [Mail](#mail)
+6. [Job 2](#mail)
 
 
 > Toute la suite de ce tutoriel sera fait en ``su -``
