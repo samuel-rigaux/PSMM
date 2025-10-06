@@ -709,7 +709,7 @@ except Exception as e:
     smtp_server  =  "smtp.gmail.com"
     smtp_port  =  587
     smtp_user  =  "samuel.rigaux@laplateforme.io"  # Adresse expéditrice du mail
-    smtp_password  =  "qnjvfduywrhjrnbg"
+    smtp_password  =  "mot de passe d'application"
     mail_to  =  "samuel.rigaux@icloud.com"  # Destinataire admin
     
     # Calcul de la date d'hier
